@@ -11,20 +11,30 @@ class App(ctk.CTk):
         self.title("Notes App")
         self.geometry(f"{WIN_WIDTH}x{WIN_HEIGHT}")
         self.grid_rowconfigure(0, weight=1)
-        self.grid_columnconfigure(0, weight=1)
+        self.minsize(900, 600)
 
+        self.grid_columnconfigure(0, weight=1, uniform="my_split")
+        self.grid_columnconfigure(1, weight=1, uniform="my_split")
 
-        self.editor = ctk.CTkTextbox(master=self, width=int(WIN_WIDTH/2), height=int(WIN_HEIGHT), corner_radius=0, border_spacing=10, font=ctk.CTkFont(family="JetBrainsMono Nerd Font", size=15))
-        self.editor.grid(row=0, column=0, sticky="nsw")
+        self.editor = ctk.CTkTextbox(
+            master=self,
+            corner_radius=0,
+            border_spacing=10,
+            font=ctk.CTkFont(family="JetBrainsMono Nerd Font", size=15)
+        )
+        self.editor.grid(row=0, column=0, sticky="nsew", padx=(5, 5), pady=10)
 
         # 1. Initialize the markdown widget with the dark theme settings
-        self.preview_pane = CTkMarkdown(self, width=int(WIN_WIDTH)/2, height=int(WIN_HEIGHT), bg_color="#000000", text_color="#ffffff")
-
+        self.preview_pane = CTkMarkdown(
+            master=self,
+            bg_color="#000000",
+            text_color="#ffffff"
+        )
         # 2. Access the underlying textbox tags to force left justification and custom visibility
         self.preview_pane._textbox.tag_config("hr", justify="left")
         self.preview_pane._textbox.tag_config("hr", foreground="#555555") # Soft, visible grey for dark background
 
-        self.preview_pane.grid(row=0, column=1, sticky="nse")
+        self.preview_pane.grid(row=0, column=1, sticky="nsew", padx=(5, 10), pady=10)
 
         self.editor.bind("<KeyRelease>", self.update_preview)
 
