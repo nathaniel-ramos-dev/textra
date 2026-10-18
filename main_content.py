@@ -1,16 +1,19 @@
 import customtkinter as ctk
 from ctk_markdown import CTkMarkdown
 
+
 class MainFrame(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
         frame_font: ctk.CTkFont = kwargs.pop("font", ctk.CTkFont("Arial", 15))
+        preview_visible: bool = kwargs.pop("preview_visible", True)
+
         super().__init__(master, **kwargs)
 
-        self.rowconfigure(0, weight=1)
-        self.grid_columnconfigure(0, weight=1, uniform="my_split")
-        self.grid_columnconfigure(1, weight=1, uniform="my_split")
+        self.preview_visible = preview_visible
 
-        self.editor = ctk.CTkTextbox(
+        self.rowconfigure(0, weight=1)
+
+        self.editor: ctk.CTkTextbox = ctk.CTkTextbox(
             master=self,
             corner_radius=0,
             border_spacing=10,
@@ -19,7 +22,7 @@ class MainFrame(ctk.CTkFrame):
 
         self.editor.bind("<Control-a>", self.select_all)
 
-        self.editor.grid(row=0, column=0, sticky="nsew", padx=(0, 2), pady=0)
+        self.editor.grid(row=0, column=0, sticky="nsew", pady=0)
 
         # 1. Initialize the markdown widget with the dark theme settings
         self.preview_pane = CTkMarkdown(
@@ -33,7 +36,8 @@ class MainFrame(ctk.CTkFrame):
         self.preview_pane._textbox.tag_config("hr", justify="left")
         self.preview_pane._textbox.tag_config("hr", foreground="#555555") # Soft, visible grey for dark background
 
-        self.preview_pane.grid(row=0, column=1, sticky="nsew", padx=(2, 0), pady=0)
+
+        self.set_preview_visible(self.preview_visible)
 
         self.editor.bind("<KeyRelease>", self.update_preview)
 
@@ -49,3 +53,17 @@ class MainFrame(ctk.CTkFrame):
         # Re-apply the formatting every time the Markdown renderer refreshes the text content
         self.preview_pane._textbox.tag_config("hr", justify="left")
         self.preview_pane._textbox.tag_config("hr", foreground="#ffffff") # Pure bright white
+
+    def set_preview_visible(self, toggle: bool):
+        if toggle:
+            self.editor.grid_configure(columnspan=1)
+            self.preview_pane.grid(row=0, column=1, sticky="nsew", padx=(2, 0), pady=0)
+            self.grid_columnconfigure(0, weight=1, uniform="my_split")
+            self.grid_columnconfigure(1, weight=1, uniform="my_split")
+        else:
+            self.editor.grid_configure(columnspan=2)
+            self.preview_pane.grid_remove()
+            self.grid_columnconfigure(0, weight=1, uniform="my_split")
+            self.grid_columnconfigure(1, weight=0, uniform="my_split")
+
+
