@@ -9,13 +9,14 @@ WIN_WIDTH = 1000
 WIN_HEIGHT = 700
 TITLE = "My Notes App"
 
+
 class TopBar(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
         frame_font: ctk.CTkFont = kwargs.pop("font", ctk.CTkFont("Arial", 15))
         toggle_preview_fn: Callable = kwargs.pop("toggle_preview_fn", None)
 
         super().__init__(master, **kwargs)
-        self.grid_rowconfigure(0, weight=0) 
+        self.grid_rowconfigure(0, weight=0)
         self.grid_columnconfigure(0, weight=1)
 
         self.label = ctk.CTkLabel(master=self, text=TITLE, font=frame_font)
@@ -24,6 +25,7 @@ class TopBar(ctk.CTkFrame):
 
         self.toggle_preview = ctk.CTkButton(master=self, text="Hide Preview", command=toggle_preview_fn)
         self.toggle_preview.grid(row=0, column=2, pady=5, padx=(0, 10), sticky="ew")
+
 
 class App(ctk.CTk):
     def __init__(self):
@@ -47,6 +49,7 @@ class App(ctk.CTk):
         self.mainFrame = MainFrame(master=self, font=MAIN_FONT, preview_visible=self.preview_visible)
         self.mainFrame.grid(row=1, column=0, sticky="nsew", columnspan=2)
 
+
     def toggle_preview(self):
         self.preview_visible = not self.preview_visible
         self.mainFrame.set_preview_visible(self.preview_visible)
@@ -56,6 +59,7 @@ class App(ctk.CTk):
             btn.configure(text="Hide Preview")
         else:
             btn.configure(text="Show Preview")
+
 
 if __name__ == '__main__':
     ctk.set_appearance_mode("System")

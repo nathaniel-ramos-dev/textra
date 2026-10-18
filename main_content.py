@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from ctk_markdown import CTkMarkdown
 
+EDITOR_FONT_SIZE = 18
 
 class MainFrame(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
@@ -29,6 +30,7 @@ class MainFrame(ctk.CTkFrame):
             master=self,
             bg_color="#000000",
             text_color="#ffffff",
+            corner_radius=0,
             font=frame_font
         )
 
@@ -40,6 +42,11 @@ class MainFrame(ctk.CTkFrame):
         self.set_preview_visible(self.preview_visible)
 
         self.editor.bind("<KeyRelease>", self.update_preview)
+
+    def increase_font_size(self, event):
+        textbox: ctk.CTkTextbox = event.widget
+        textbox.cget("font").configure(size=)
+
 
     def select_all(self, event):
         textbox = event.widget
@@ -65,5 +72,3 @@ class MainFrame(ctk.CTkFrame):
             self.preview_pane.grid_remove()
             self.grid_columnconfigure(0, weight=1, uniform="my_split")
             self.grid_columnconfigure(1, weight=0, uniform="my_split")
-
-
