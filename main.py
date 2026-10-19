@@ -63,6 +63,6 @@ class App(ctk.CTk):
 
 if __name__ == '__main__':
     ctk.set_appearance_mode("System")
-    ctk.set_default_color_theme("./themes/rime.json")
+    ctk.set_default_color_theme("./themes/coffee.json")
     app = App()
     app.mainloop()

@@ -118,6 +118,13 @@
     "text_color": ["#DCE4EE", "#DCE4EE"],
     "text_color_disabled": ["#A89B89", "#8E7D72"]
   },
+  "CTkMarkdown": {
+    "fg_color": ["#EDE0CF", "#1D1E1E"],
+    "border_color": ["#AFA292", "#725B4E"],
+    "text_color": ["#6D5143", "#DCE4EE"],
+    "scrollbar_button_color": ["#8B746A", "#725B4E"],
+    "scrollbar_button_hover_color": ["#6F4C37", "#4B3126"]
+  },
   "CTkTextbox": {
     "corner_radius": 6,
     "border_width": 0,
