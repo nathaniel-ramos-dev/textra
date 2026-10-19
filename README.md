@@ -1,6 +1,4 @@
 # TEXTRA
-![TEXTRA LOGO](./assets/textra-logo.png)
-
 
 <div align="center">
 
