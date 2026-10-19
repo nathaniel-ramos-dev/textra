@@ -45,7 +45,7 @@ Built with Python and CustomTkinter, TEXTRA is an evolving project focused on cr
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/YOUR_USERNAME/textra.git
+   git clone https://github.com/nathaniel-ramos-dev/textra.git
    cd textra
    ```
 
