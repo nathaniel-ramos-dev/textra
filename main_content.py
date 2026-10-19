@@ -1,7 +1,6 @@
 import customtkinter as ctk
 from ctk_markdown import CTkMarkdown
 
-EDITOR_FONT_SIZE = 18
 
 class MainFrame(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
@@ -10,7 +9,10 @@ class MainFrame(ctk.CTkFrame):
 
         super().__init__(master, **kwargs)
 
+        self.current_editor_font_size = 18
         self.preview_visible = preview_visible
+        self.editor_font : ctk.CTkFont = ctk.CTkFont(family="JetBrainsMono Nerd Font", size=self.current_editor_font_size)
+        self.editor_font.configure(size=self.current_editor_font_size)
 
         self.rowconfigure(0, weight=1)
 
@@ -18,10 +20,16 @@ class MainFrame(ctk.CTkFrame):
             master=self,
             corner_radius=0,
             border_spacing=10,
-            font=frame_font
+            font=self.editor_font
         )
 
         self.editor.bind("<Control-a>", self.select_all)
+
+        self.editor.bind("<plus>", command=self.increase_editor_font_size)
+        self.editor.bind("<Control-plus>", command=self.increase_editor_font_size)
+
+        self.editor.bind("<minus>", command=self.decrease_editor_font_size)
+        self.editor.bind("<Control-minus>", command=self.decrease_editor_font_size)
 
         self.editor.grid(row=0, column=0, sticky="nsew", pady=0)
 
@@ -43,10 +51,19 @@ class MainFrame(ctk.CTkFrame):
 
         self.editor.bind("<KeyRelease>", self.update_preview)
 
-    def increase_font_size(self, event):
-        textbox: ctk.CTkTextbox = event.widget
-        textbox.cget("font").configure(size=)
+    def increase_editor_font_size(self, event):
+        textbox = event.widget
+        self.current_editor_font_size += 2
+        self.editor_font.configure(size=self.current_editor_font_size)
+        textbox.update_idletasks()
+        return "break"
 
+    def decrease_editor_font_size(self, event):
+        textbox = event.widget
+        self.current_editor_font_size -= 2
+        self.editor_font.configure(size=self.current_editor_font_size)
+        textbox.update_idletasks()
+        return "break"
 
     def select_all(self, event):
         textbox = event.widget
@@ -67,8 +84,13 @@ class MainFrame(ctk.CTkFrame):
             self.preview_pane.grid(row=0, column=1, sticky="nsew", padx=(2, 0), pady=0)
             self.grid_columnconfigure(0, weight=1, uniform="my_split")
             self.grid_columnconfigure(1, weight=1, uniform="my_split")
+            self.preview_pane.update_idletasks()
+            return "break"
         else:
             self.editor.grid_configure(columnspan=2)
             self.preview_pane.grid_remove()
             self.grid_columnconfigure(0, weight=1, uniform="my_split")
             self.grid_columnconfigure(1, weight=0, uniform="my_split")
+            self.preview_pane.update_idletasks()
+            return "break"
+
